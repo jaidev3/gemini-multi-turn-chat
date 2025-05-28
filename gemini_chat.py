@@ -2,7 +2,6 @@ import google.generativeai as genai
 
 # Configure the Gemini API key
 genai.configure(api_key="add your api here")
-
 def main():
     # Get model parameters from the user
     temperature_str = input("Enter temperature (e.g., 0.7, leave blank for default(0.9)): ")
@@ -27,24 +26,28 @@ def main():
     # Start a chat session
     chat = model.start_chat(history=[])
 
-    print("\nConversation  . Type 'quit' to end the chat.")
+    print("\nStarting chat session...")
 
-    while True:
-        user_input = input("You: ")
-        if user_input.lower() == 'quit':
-            print("Exiting chat.")
-            break
+    # Get the first user input
+    user_input1 = input("You (first message): ")
 
-        # Send message to the model
-        response = chat.send_message(user_input)
+    # Send the first message to the model
+    # We don't need to print the first response as per the requirement.
+    chat.send_message(user_input1)
 
-        # Print the Gemini response (text only)
-        if response.parts:
-            print(f"Gemini: {response.text}")
-        else:
-            print("Gemini: No response received or response was empty.")
-            # It can be helpful to see the full response for debugging if it's empty
-            # print(f"Full response: {response}")
+    # Get the second user input
+    user_input2 = input("You (second message): ")
+
+    # Send the second message to the model
+    final_response = chat.send_message(user_input2)
+
+    # Print the final Gemini response (text only)
+    if final_response.parts:
+        print(f"Gemini: {final_response.text}")
+    else:
+        print("Gemini: No response received or response was empty.")
+        # It can be helpful to see the full response for debugging if it's empty
+        # print(f"Full response: {final_response}")
 
 if __name__ == "__main__":
     main() 
